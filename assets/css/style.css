@@ -1,0 +1,54 @@
+/*
+==============================
+BASICS
+==============================
+*/
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 768px;
+    margin: 0 auto;
+}
+
+strong {
+    font-weight: bold;
+}
+
+/*
+==============================
+FOOTER
+==============================
+*/
+
+footer .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 15px;
+}
+
+footer nav ul {
+    display: flex;
+}
+
+footer nav li {
+    flex-basis: auto;
+    padding-right: 2em;
+}
+
+nav a {
+    text-decoration: none;
+    text-align: center;
+    transition: all .75s;
+}
+
+nav a:hover {
+
+}
+
+.copyright {
+    text-align: right;
+}
