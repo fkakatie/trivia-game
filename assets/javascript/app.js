@@ -142,18 +142,25 @@ function collectAnswer() {
 
 function evaluateGuess() {
 
+    $('#question').empty();
+    $('#options').empty();
+
     if (userGuess === trivia[questionNumber].answerIndex) {
-        console.log("yes!");
+    
         correct++;
-        console.log('correct: ' + correct);
+        $('#question').text('Correct!');
+        
     }
     else {
-        console.log("no!");
+    
         incorrect++;
-        console.log('incorrect: ' + incorrect);
+        $('#question').text('Wrong!');
+    
     }
 
-    nextQuestion();
+    setTimeout(function() {
+        nextQuestion();
+    }, 3000);
 
 };
 
