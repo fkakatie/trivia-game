@@ -18,11 +18,35 @@
 // - count correct/incorrect guesses
 // - start/stop timer
 
-var timer = {
-    time: 50, // in tenths of a second
-    running: false,
+var correct = 0;
+    incorrect = 0;
+    timeOut = 0;
 
-    startBtn: $('#startBtn'),
+var questionNumber = 0;
+    currentQuestion = '';
+    userGuess = '';
+
+var trivia = [
+    {
+        question: "Pick 0.",
+        options: ["zero", "one", "two"],
+        answerIndex: 0
+    },
+    {
+        question: "Pick 1.",
+        options: ["zero", "one", "two"],
+        answerIndex: 1
+    },
+    {
+        question: "Pick 2.",
+        options: ["zero", "one", "two"],
+        answerIndex: 2
+    }
+];
+
+var timer = {
+    time: 140, // in tenths of a second
+    running: false,
 
     starter: function() {
         if (!this.running) {
@@ -32,9 +56,9 @@ var timer = {
     },
 
     stopper: function() {
-        if (this.time < 1) {
+        if (this.time <= 1) {
             this.running = false;
-            $('#countdown').text("00:00");
+            // $('#countdown').text("00:00");
         }
     },
 
@@ -65,8 +89,107 @@ var timer = {
     }
 };
 
-$('#startBtn').on('click', function() {
-    timer.starter();
+function askQuestions() {
 
-    console.log("the button works at least");
+    $('#question').empty();
+    $('#options').empty();
+
+    var currentQuestion = trivia[questionNumber];
+
+    console.log(currentQuestion);
+
+    $('#question').text(currentQuestion.question);
+
+    $('#options').append('<ul class="options">');
+
+    for (var i = 0; i < trivia[questionNumber].options.length; i++) {
+
+        $('.options').append('<li class="listOptions">' + trivia[questionNumber].options[i]) + '</li>';
+
+    }
+
+    collectAnswer();
+
+};
+
+function nextQuestion() {
+
+    questionNumber++;
+
+    console.log('q#: ' + questionNumber);
+    console.log(trivia.length);
+
+    if (questionNumber < trivia.length) {
+        askQuestions();
+    }
+    else {
+        endGame();
+    }
+
+};
+
+function collectAnswer() {
+
+    $('li.listOptions').on('click', function() {
+
+        userGuess = $('li.listOptions').index(this);
+
+        evaluateGuess();
+
+    });
+
+};
+
+function evaluateGuess() {
+
+    if (userGuess === trivia[questionNumber].answerIndex) {
+        console.log("yes!");
+        correct++;
+        console.log('correct: ' + correct);
+    }
+    else {
+        console.log("no!");
+        incorrect++;
+        console.log('incorrect: ' + incorrect);
+    }
+
+    nextQuestion();
+
+};
+
+function endGame() {
+
+    $('#question').empty();
+    $('#options').empty();
+
+    console.log('game over');
+
+    $('#question').text('Game over!');
+
+    $('#options').html(
+    '<p> Correct Answers: ' + correct + '</p>' + 
+    '<p> Incorrect Answers: ' + incorrect + '</p>'     
+    );
+
+    questionNumber = 0;
+    correct = 0;
+    incorrect = 0;
+
+    $('#options').append('<button id="restartBtn">Restart Game</button>');
+
+    $('#restartBtn').on('click', function() {
+        console.log("the button works at least");
+        askQuestions();
+    });
+
+
+}
+
+$(document).ready(function() {
+
+    $('#startBtn').on('click', function() {
+        console.log("the button works at least");
+        askQuestions();
+    });
+
 });
