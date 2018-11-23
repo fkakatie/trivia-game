@@ -45,7 +45,7 @@ var trivia = [
 ];
 
 var timer = {
-    time: 140, // in tenths of a second
+    time: 50, // in tenths of a second
     running: false,
 
     starter: function() {
@@ -56,10 +56,11 @@ var timer = {
     },
 
     stopper: function() {
-        if (this.time <= 1) {
-            this.running = false;
-            // $('#countdown').text("00:00");
-        }
+        this.running = false;
+        $('#countdown').text('00:00');
+
+        evaluateGuess();
+
     },
 
     decrement: function() {
@@ -78,11 +79,11 @@ var timer = {
 
                 $('#countdown').text(secs + ":" + "0" + tenths);
 
-                // console.log(Number(timer.time));
-
                 timer.decrement();
-
-                timer.stopper();
+                
+                if (timer.time === 0) {
+                    timer.stopper();
+                };
 
             }, 100);
         }
@@ -100,6 +101,11 @@ function askQuestions() {
 
     $('#question').text(currentQuestion.question);
 
+    $('#question').append('<div id="countdown">');
+
+    timer.time = 50;
+    timer.starter();
+
     $('#options').append('<ul class="options">');
 
     for (var i = 0; i < trivia[questionNumber].options.length; i++) {
@@ -107,7 +113,7 @@ function askQuestions() {
         $('.options').append('<li class="listOptions">' + trivia[questionNumber].options[i]) + '</li>';
 
     }
-
+    
     collectAnswer();
 
 };
@@ -115,9 +121,6 @@ function askQuestions() {
 function nextQuestion() {
 
     questionNumber++;
-
-    console.log('q#: ' + questionNumber);
-    console.log(trivia.length);
 
     if (questionNumber < trivia.length) {
         askQuestions();
@@ -134,6 +137,8 @@ function collectAnswer() {
 
         userGuess = $('li.listOptions').index(this);
 
+        console.log(userGuess);
+
         evaluateGuess();
 
     });
@@ -142,14 +147,22 @@ function collectAnswer() {
 
 function evaluateGuess() {
 
+    timer.running = false;
+
     $('#question').empty();
     $('#options').empty();
 
-    if (userGuess === trivia[questionNumber].answerIndex) {
+    if (timer.time === 0) {
     
+        timeOut++;
+        $('#question').text('Too slow!');    
+        
+    }
+    else if (userGuess === trivia[questionNumber].answerIndex) {
+
         correct++;
         $('#question').text('Correct!');
-        
+
     }
     else {
     
@@ -174,13 +187,15 @@ function endGame() {
     $('#question').text('Game over!');
 
     $('#options').html(
-    '<p> Correct Answers: ' + correct + '</p>' + 
-    '<p> Incorrect Answers: ' + incorrect + '</p>'     
+    '<p>Correct Answers: <strong>' + correct + '</strong></p>' + 
+    '<p>Incorrect Answers: <strong>' + incorrect + '</strong></p>' + 
+    '<p>Unanswered Questions: <strong>' + timeOut + '</strong></p>'   
     );
 
     questionNumber = 0;
     correct = 0;
     incorrect = 0;
+    timeOut = 0;
 
     $('#options').append('<button id="restartBtn">Restart Game</button>');
 
