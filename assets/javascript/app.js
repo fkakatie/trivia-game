@@ -22,9 +22,12 @@ var correct = 0;
     incorrect = 0;
     timeOut = 0;
 
-var questionNumber = 0;
+var questionIndex = 0;
     currentQuestion = '';
     userGuess = '';
+
+var questionsArr = [];
+    randomFive = [];
 
 var trivia = [
     {
@@ -177,12 +180,38 @@ var timer = {
     }
 };
 
+function questionsArray() {
+    for (var j = 0; j < trivia.length; j++) {
+        questionsArr.push(j);
+    };
+
+    console.log(questionsArr);
+};
+
+function generateFiveQuestions() {
+
+        for (var k = 0; randomFive.length < 5; k++) {
+        var randomNum = Math.floor(Math.random() * trivia.length);
+
+        if (randomFive.indexOf(randomNum) === -1) {
+            randomFive.push(randomNum);
+        }
+    };
+
+    console.log(randomFive);
+
+};
+
 function askQuestions() {
+
+    generateFiveQuestions();
 
     $('#question').empty().removeClass("big emphasis");
     $('#options').empty().removeClass("big");
 
-    var currentQuestion = trivia[questionNumber];
+    var currentQuestion = trivia[randomFive[questionIndex]];
+
+    console.log(currentQuestion);
 
     $('#question').text(currentQuestion.question).addClass("big");
 
@@ -193,9 +222,9 @@ function askQuestions() {
 
     $('#options').append('<ul class="options">');
 
-    for (var i = 0; i < trivia[questionNumber].options.length; i++) {
+    for (var i = 0; i < trivia[questionIndex].options.length; i++) {
 
-        $('.options').append('<li class="listOptions">' + trivia[questionNumber].options[i]) + '</li>';
+        $('.options').append('<li class="listOptions">' + trivia[randomFive[questionIndex]].options[i]) + '</li>';
 
     }
     
@@ -205,9 +234,9 @@ function askQuestions() {
 
 function nextQuestion() {
 
-    questionNumber++;
+    questionIndex++;
 
-    if (questionNumber < trivia.length) {
+    if (questionIndex < randomFive.length) {
         askQuestions();
     }
     else {
@@ -241,7 +270,7 @@ function evaluateGuess() {
         $('#question').text('Too slow!').addClass("emphasis");   
         
     }
-    else if (userGuess === trivia[questionNumber].answerIndex) {
+    else if (userGuess === trivia[randomFive[questionIndex]].answerIndex) {
 
         correct++;
         $('#question').text('Correct!').addClass("emphasis");
@@ -254,7 +283,7 @@ function evaluateGuess() {
     
     }
 
-    $('#options').text(trivia[questionNumber].bonus).addClass("big");
+    $('#options').text(trivia[randomFive[questionIndex]].bonus).addClass("big");
 
     setTimeout(function() {
         nextQuestion();
@@ -277,10 +306,11 @@ function endGame() {
     '<p>Unanswered Questions: <strong>' + timeOut + '</strong></p>'   
     );
 
-    questionNumber = 0;
+    questionIndex = 0;
     correct = 0;
     incorrect = 0;
     timeOut = 0;
+    randomFive = [];
 
     $('#options').append('<button id="restartBtn">Reopen Investigation ⯈</button>');
 
@@ -291,6 +321,8 @@ function endGame() {
 }
 
 $(document).ready(function() {
+
+    questionsArray();
 
     $('#startBtn').on('click', function() {
         askQuestions();
