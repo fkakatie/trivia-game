@@ -185,7 +185,6 @@ function questionsArray() {
         questionsArr.push(j);
     };
 
-    console.log(questionsArr);
 };
 
 function generateFiveQuestions() {
@@ -198,8 +197,6 @@ function generateFiveQuestions() {
         }
     };
 
-    console.log(randomFive);
-
 };
 
 function askQuestions() {
@@ -210,8 +207,6 @@ function askQuestions() {
     $('#options').empty().removeClass("big");
 
     var currentQuestion = trivia[randomFive[questionIndex]];
-
-    console.log(currentQuestion);
 
     $('#question').text(currentQuestion.question).addClass("big");
 
@@ -295,8 +290,6 @@ function endGame() {
 
     $('#question').empty();
     $('#options').empty().addClass("typed");
-
-    console.log('game over');
 
     $('#question').text('Game over!');
 
