@@ -27,7 +27,7 @@ This project contains trivia questions in a simple `object` and a separate objec
 
 ## Where users can get help with this project ##
 
-If you have any questions about this totally normal project, initiate a new pull request and leave a comment.
+If you have any questions about this totally normal project, visit my portfolio and [send me a message](https://fkakatie.github.io/responsive-portfolio/contact.html).
 
 ## Who maintains this project ## 
 
